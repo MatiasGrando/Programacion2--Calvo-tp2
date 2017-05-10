@@ -1,29 +1,36 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+#ifndef NODO_H
+#define NODO_H
 
-# Precompiled Headers
-*.gch
-*.pch
+template <typename Dato>
+class Nodo
+{
+    private:
+        int jugador;
+        int energia;
+        Nodo* nodoSiguiente;
+        Nodo* nodoAnterior;
+        Nodo* punteroIndice;
+    public:
+        //PRE: 
+        //POST: crea un nodo con los datos de un jugador y una energia correspondiente a la ficha
+        Nodo(unsigned int jugador, unsigned int energia);
+        //PRE:
+        //POST:
+        Nodo* obtenerSiguiente;
+        //PRE:
+        //POST:
+        Nodo* obtenerAnterior;
+        //PRE:
+        //POST:
+        void disminuirEnergia(unsigned int energiaPerdida);
+        //PRE:
+        //POST:
+        int obetenerJugador;
+        //PRE:
+        //POST:
+        int obtenerEnergia;
+        
+};
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+#endif // NODO_H
 
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
