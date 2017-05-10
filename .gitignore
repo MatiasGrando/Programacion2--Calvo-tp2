@@ -3,34 +3,4 @@
 
 template <typename Dato>
 class Nodo
-{
-    private:
-        int jugador;
-        int energia;
-        Nodo* nodoSiguiente;
-        Nodo* nodoAnterior;
-        Nodo* punteroIndice;
-    public:
-        //PRE: 
-        //POST: crea un nodo con los datos de un jugador y una energia correspondiente a la ficha
-        Nodo(unsigned int jugador, unsigned int energia);
-        //PRE:
-        //POST:
-        Nodo* obtenerSiguiente;
-        //PRE:
-        //POST:
-        Nodo* obtenerAnterior;
-        //PRE:
-        //POST:
-        void disminuirEnergia(unsigned int energiaPerdida);
-        //PRE:
-        //POST:
-        int obetenerJugador;
-        //PRE:
-        //POST:
-        int obtenerEnergia;
-        
-};
-
-#endif // NODO_H
 
