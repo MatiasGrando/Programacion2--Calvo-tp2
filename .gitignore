@@ -1,7 +1,8 @@
 #ifndef NODO_H
 #define NODO_H
+#define ENERGIAMAXIMA 100
+#define ENERGIAMINIMA 0
 
-template <typename Dato>
 class Nodo
 {
     private:
