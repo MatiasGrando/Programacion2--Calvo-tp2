@@ -1,6 +1,33 @@
-#ifndef NODO_H
-#define NODO_H
+#include "Nodo.h"
 
-template <typename Dato>
-class Nodo
+Nodo::Nodo(unsigned int jugador)
+{
+        this->jugador = jugador;
+        this->energia = ENERGIAMAXIMA;
 
+}
+
+Nodo* Nodo::obtenerSiguiente()
+{
+    return this->nodoSiguiente;
+}
+
+Nodo* Nodo::obtenerAnterior()
+{
+    return this->nodoAnterior;
+}
+
+void Nodo::disminuirEnergia(unsigned int energiaPerdida)
+{
+    this->energia= (this->energia - energiaPerdida);
+}
+
+int Nodo::obetenerJugador()
+{
+    return this->jugador;
+}
+
+int Nodo::obtenerEnergia()
+{
+    return this->energia;
+}
