@@ -80,11 +80,7 @@ bool Lista<T>::avanzarCursor()
     this->cursor = this->cursor->obtenerSiguiente();
     return(this->cursor !=0);
 }
-template <typename T>
-void Lista<T>::retrocederCursor()
-{
-    this->cursor = this->cursor->obtenerAnterior();
-}
+
 template <typename T>
 Nodo<T>* Lista<T>::obtenerCursor()
 {
