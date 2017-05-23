@@ -1,32 +1,30 @@
-#ifndef COLUMNA_H
-#define COLUMNA_H
-#include "Fila.h"
+#ifndef FILA_H
+#define FILA_H
+#include "Ficha.h"
 
 
-class Columna
+class Fila
 {
     public:
-        Columna();
-        ~Columna();
-        Lista<Fila*>* obtenerColumnas();
+        Fila();
+        ~Fila();
+        Lista<Ficha*>*  obtenerFilas();
+
 
     private:
-        Lista<Fila*>* listaColumnas;
+        Lista<Ficha*>* filasDeFichas;
 };
-
-Columna::Columna()
+Fila::Fila()
 {
-    this->listaColumnas=new Lista<Fila*>;
+    this->filasDeFichas=new Lista<Ficha*>;
 }
-Columna::~Columna()
+Fila::~Fila()
 {
-    delete obtenerColumnas();
-}
-
-Lista<Fila*>* Columna::obtenerColumnas()
-{
-    return this->listaColumnas;
+    delete obtenerFilas();
 }
 
-
-#endif // COLUMNA_H
+Lista<Ficha*>* Fila::obtenerFilas()
+{
+    return this->filasDeFichas;
+}
+#endif // FILA_H
