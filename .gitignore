@@ -1,6 +1,6 @@
 #ifndef COLUMNA_H
 #define COLUMNA_H
-#include "Fila.h"
+#include "Ficha.h"
 
 
 class Columna
@@ -8,25 +8,24 @@ class Columna
     public:
         Columna();
         ~Columna();
-        Lista<Fila*>* obtenerColumnas();
+        Lista<Ficha*>*  obtenerColumna();
+
 
     private:
-        Lista<Fila*>* listaColumnas;
+        Lista<Ficha*>* ColumnaDeFichas;
 };
-
 Columna::Columna()
 {
-    this->listaColumnas=new Lista<Fila*>;
+    this->ColumnaDeFichas=new Lista<Ficha*>;
 }
 Columna::~Columna()
 {
-    delete obtenerColumnas();
+    delete obtenerColumna();
 }
 
-Lista<Fila*>* Columna::obtenerColumnas()
+Lista<Ficha*>* Columna::obtenerColumna()
 {
-    return this->listaColumnas;
+    return this->ColumnaDeFichas;
 }
-
 
 #endif // COLUMNA_H
