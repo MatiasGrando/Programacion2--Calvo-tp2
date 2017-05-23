@@ -97,19 +97,13 @@ void Lista<T>::iniciarCursorUltimo()
 template <typename T>
 bool Lista<T>::avanzarCursor()
 {
-    if(this->cursor->obtenerSiguiente()!=0)
-    {
-        this->cursor = this->cursor->obtenerSiguiente();
-    }
+    this->cursor = (this->cursor->obtenerSiguiente());
     return(this->cursor !=0);
 }
 template <typename T>
 bool Lista<T>::retrocederCursor()
 {
-    if(this->cursor->obtenerAnterior()!= 0)
-    {
-        this->cursor = this->cursor->obtenerAnterior();
-    }
+    this->cursor = this->cursor->obtenerAnterior();
     return (this->cursor != 0);
 }
 
@@ -170,3 +164,4 @@ unsigned int Lista<T>::obtenerTamanio()
 
 
 #endif // LISTA_H
+
