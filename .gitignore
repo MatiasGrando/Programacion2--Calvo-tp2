@@ -1,6 +1,7 @@
 #ifndef LISTA_H
 #define LISTA_H
 #include "Nodo.h"
+#include "Ficha.h"
 
 template <typename T>
 class Lista
@@ -13,14 +14,14 @@ class Lista
 
     public:
        //pre:
-       //post: crea una lista vacia 
+       //post: crea una lista vacia
        Lista();
        //pre:lista creada
        //post: libera la memoria pedida
        ~Lista();
        //pre:lista no vacia
        //post: elemina un elemento de la lista
-    
+
        void eliminarElemento(Nodo<T>* cursor);
        //pre:
        //post: agrega un nodo al final de la lista
@@ -32,8 +33,10 @@ class Lista
        bool listaVacia();
        //pre:
        //post: devuelve el tamanio de la lista
-       
+
        unsigned int obtenerTamanio();
+
+       Nodo<T>* obtenerUltimo();
 
     //-----------------------------------------
         //pre:lista no vacia
@@ -70,6 +73,11 @@ Lista<T>::~Lista()
     }
 }
 template <typename T>
+Nodo<T>* Lista<T>::obtenerUltimo()
+{
+     return (this->ultimo);
+}
+template <typename T>
 void Lista<T>::iniciarCursor()
 {
     this->cursor=this->primero;
@@ -77,7 +85,10 @@ void Lista<T>::iniciarCursor()
 template <typename T>
 bool Lista<T>::avanzarCursor()
 {
-    this->cursor = this->cursor->obtenerSiguiente();
+    if(this->cursor->obtenerSiguiente()!=0)
+    {
+        this->cursor = this->cursor->obtenerSiguiente();
+    }
     return(this->cursor !=0);
 }
 
@@ -99,6 +110,7 @@ void Lista<T>::agregarElemento(T nuevoDato)
     if (!listaVacia())
     {
         this->ultimo->cambiarSiguiente(nuevoElemento);
+        nuevoElemento->cambiarAnterior(this->ultimo);
         this->ultimo = nuevoElemento;
     }
     else
