@@ -1,59 +1,32 @@
-#ifndef FICHA_H
-#define FICHA_H
-#define ENERGIAMAXIMA 100
-#define ENERGIAMINIMA 0
+#ifndef COLUMNA_H
+#define COLUMNA_H
+#include "Fila.h"
 
-class Ficha
+
+class Columna
 {
+    public:
+        Columna();
+        ~Columna();
+        Lista<Fila*>* obtenerColumnas();
 
     private:
-        unsigned int jugador;
-        int energia;
-    public:
-        //PRE:
-        //POST: Crea una ficha con jugador = 0 y una energia = 0
-        Ficha();
-        //PRE:La energia no puede ser:
-        //                          //menor de 0
-        //                         // mayor a 100
-        //POST: Modifica la energia Actual de la ficha
-        void fluctuacionDeEnergia( int energiaFluctuada);
-        //PRE:---
-        //POST:Devuelve energia actual del nodo
-        int obtenerEnergia();
-        //PRE:----
-        //POST:Devuelve el numero del jugador perteneciente al nodo
-        unsigned int obtenerJugador();
-        //PRE:nodo existente
-        //POST:cambia el numero del jugador
-        void cambiarJugador(unsigned int nuevoJugador);
-
+        Lista<Fila*>* listaColumnas;
 };
-Ficha::Ficha()
+
+Columna::Columna()
 {
-    this->energia = 0;
-    this->jugador = 0;
+    this->listaColumnas=new Lista<Fila*>;
 }
-unsigned int Ficha::obtenerJugador()
+Columna::~Columna()
 {
-    return this->jugador;
-}
-void Ficha::cambiarJugador(unsigned int nuevoJugador)
-{
-    this->jugador = nuevoJugador;
+    delete obtenerColumnas();
 }
 
-int Ficha::obtenerEnergia()
+Lista<Fila*>* Columna::obtenerColumnas()
 {
-    return this->energia;
-}
-void Ficha::fluctuacionDeEnergia(int energiaFluctuada)
-{
-    this->energia = (this->energia + energiaFluctuada);
-    if (this->energia < ENERGIAMINIMA){this->energia = ENERGIAMINIMA;}
-    else if(this->energia > ENERGIAMAXIMA){this->energia = ENERGIAMAXIMA; };
-
+    return this->listaColumnas;
 }
 
 
-#endif // FICHA_H
+#endif // COLUMNA_H
