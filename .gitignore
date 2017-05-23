@@ -1,30 +1,94 @@
-#ifndef FILA_H
-#define FILA_H
-#include "Ficha.h"
-
-
-class Fila
+#ifndef CUATROENLINEAENERGIZADO_H
+#define CUATROENLINEAENERGIZADO_H
+#include "Lista.h"
+#include "IndiceColumna.h"
+#include <iostream>
+using namespace std;
+class CuatroEnLineaEnergizado
 {
-    public:
-        Fila();
-        ~Fila();
-        Lista<Ficha*>*  obtenerFilas();
-
-
     private:
-        Lista<Ficha*>* filasDeFichas;
+        IndiceColumna* tableroColumnas;
+        unsigned int cantidadColumnas;
+        unsigned int cantidadFilas;
+        void inicializarCursorDeColumnaActualEImprimirFicha();
+        void retrocederCursorDeColumnaActualEImprimirFicha();
+         //imprime la primera fila e inicializa los cursores de las listas de columnas en la ultima posicion
+        void imprimirPrimeraFila();
+        //imprime las filas y va retrocediendo el  cursor de la lista columnas hasta llegar e imprimir el primero
+        void imprimirRestoDeFilas();
+
+    public:
+        CuatroEnLineaEnergizado(unsigned int filas,unsigned int columnas);
+        void crearTablero();
+        void imprimirTablero();
+
 };
-Fila::Fila()
+
+CuatroEnLineaEnergizado::CuatroEnLineaEnergizado(unsigned int filas,unsigned int columnas)
 {
-    this->filasDeFichas=new Lista<Ficha*>;
+    this->cantidadColumnas=columnas;
+    this->cantidadFilas=filas;
+    tableroColumnas= new IndiceColumna;
 }
-Fila::~Fila()
+void CuatroEnLineaEnergizado::crearTablero()
 {
-    delete obtenerFilas();
+    for (int i=0; i<(this->cantidadColumnas);i++)
+    {
+        Columna* columnaActual= new Columna;
+        tableroColumnas->obtenerColumnas()->agregarElemento(columnaActual);
+        for (int j=0; j<(this->cantidadFilas);j++)
+        {
+            columnaActual->obtenerColumna()->agregarElemento(new Ficha);
+        }
+    }
+}
+void CuatroEnLineaEnergizado::inicializarCursorDeColumnaActualEImprimirFicha()
+{
+    Columna* columnaActual;
+    Ficha* fichaActual;
+    columnaActual= this->tableroColumnas->obtenerColumnas()->obtenerCursor()->obtenerDato();
+    columnaActual->obtenerColumna()->iniciarCursorUltimo();
+    fichaActual=columnaActual->obtenerColumna()->obtenerCursor()->obtenerDato();
+    cout<<fichaActual->obtenerJugador()<<" "<<fichaActual->obtenerEnergia()<<"     ";
+}
+void CuatroEnLineaEnergizado::retrocederCursorDeColumnaActualEImprimirFicha()
+{
+    Columna* columnaActual;
+    Ficha* fichaActual;
+    columnaActual= this->tableroColumnas->obtenerColumnas()->obtenerCursor()->obtenerDato();
+    columnaActual->obtenerColumna()->retrocederCursor();
+    fichaActual=columnaActual->obtenerColumna()->obtenerCursor()->obtenerDato();
+    cout<<fichaActual->obtenerJugador()<<" "<<fichaActual->obtenerEnergia()<<"     ";
+
+}
+void CuatroEnLineaEnergizado::imprimirPrimeraFila()
+{
+    this->tableroColumnas->obtenerColumnas()->iniciarCursor();
+    inicializarCursorDeColumnaActualEImprimirFicha();
+    while(this->tableroColumnas->obtenerColumnas()->avanzarCursor())
+    {
+        inicializarCursorDeColumnaActualEImprimirFicha();
+    }
+}
+void CuatroEnLineaEnergizado::imprimirRestoDeFilas()
+{
+    for (int i=1; i<(this->cantidadFilas);i++)
+    {
+        cout<<endl<<endl<<endl;
+        this->tableroColumnas->obtenerColumnas()->iniciarCursor();
+        retrocederCursorDeColumnaActualEImprimirFicha();
+        while(this->tableroColumnas->obtenerColumnas()->avanzarCursor())
+        {
+            retrocederCursorDeColumnaActualEImprimirFicha();
+        }
+    }
 }
 
-Lista<Ficha*>* Fila::obtenerFilas()
+void CuatroEnLineaEnergizado::imprimirTablero()
 {
-    return this->filasDeFichas;
+    imprimirPrimeraFila();
+    imprimirRestoDeFilas();
+
 }
-#endif // FILA_H
+
+#endif // CUATROENLINEAENERGIZADO_H
