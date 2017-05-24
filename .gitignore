@@ -7,6 +7,8 @@ using namespace std;
 class CuatroEnLineaEnergizado
 {
     private:
+        unsigned int cantidadDeFichasEnELTablero;
+        unsigned int cantidadDeJugadores;
         IndiceColumna* tableroColumnas;
         unsigned int cantidadColumnas;
         unsigned int cantidadFilas;
@@ -16,19 +18,119 @@ class CuatroEnLineaEnergizado
         void imprimirPrimeraFila();
         //imprime las filas y va retrocediendo el  cursor de la lista columnas hasta llegar e imprimir el primero
         void imprimirRestoDeFilas();
-
-    public:
-        CuatroEnLineaEnergizado(unsigned int filas,unsigned int columnas);
         void crearTablero();
         void imprimirTablero();
+        void insertarFicha(int jugador);
+        bool columnaLlena(int columna);
+        bool comprobarSiHayGanador();
+        Columna* posicionarseEnColumna(int columna);
+        Ficha* posicionarseEnFilaLibre(Columna* columnaActual);
+        void mensajeDeFinalizacionDelJuego(int jugador, bool hayGanador);
+
+    public:
+        CuatroEnLineaEnergizado(unsigned int filas,unsigned int columnas,unsigned int jugadores);
+
+        void iniciarPartida();
 
 };
+bool CuatroEnLineaEnergizado::columnaLlena(int columna)
+{
+    Columna* columnaActual= posicionarseEnColumna(columna);
+    columnaActual->obtenerColumna()->iniciarCursorUltimo();
+    Ficha* fichaActual= columnaActual->obtenerColumna()->obtenerCursor()->obtenerDato();
+    return (fichaActual->obtenerJugador() != 0);
+    }
+bool CuatroEnLineaEnergizado::comprobarSiHayGanador()
+{
+    
+}
+Columna* CuatroEnLineaEnergizado::posicionarseEnColumna(int columna)
+{
+    this->tableroColumnas->obtenerColumnas()->iniciarCursor();
+    for(int i =1; i< columna;i++)
+    {
+        tableroColumnas->obtenerColumnas()->avanzarCursor();
+    }
+    Columna* columnaActual=this->tableroColumnas->obtenerColumnas()->obtenerCursor()->obtenerDato();
+    return columnaActual;
+}
+Ficha* CuatroEnLineaEnergizado::posicionarseEnFilaLibre(Columna* columnaActual)
+{
+    columnaActual->obtenerColumna()->iniciarCursor();
+    Ficha* fichaActual= columnaActual->obtenerColumna()->obtenerCursor()->obtenerDato();
+    if(fichaActual->obtenerJugador()!= 0)
+    {
+        while (fichaActual->obtenerJugador()!=0)
+        {
+            columnaActual->obtenerColumna()->avanzarCursor();
+            fichaActual= columnaActual->obtenerColumna()->obtenerCursor()->obtenerDato();
+        }
+        return fichaActual;
+    }
+    else
+    {
+        return fichaActual;
+    }
+}
+void CuatroEnLineaEnergizado::insertarFicha(int jugador)
+{
+    int columna;
+    this->cantidadDeFichasEnELTablero++;
+    do
+    {
+        cout<<endl<<"Turno del Jugador "<<jugador<<" -------- "<<"ingrese columna"<<endl;
+        cin>>columna;
+        if (columnaLlena(columna) == true)
+        {
+                cout<<endl<<"Columna llena, ingrese otra columna la cual no se encuentre llena"<<endl;
+        }
+    }while(columnaLlena(columna) == true);
+    Columna* columnaActual= posicionarseEnColumna(columna);
+    Ficha* fichaActual= posicionarseEnFilaLibre(columnaActual);
+    fichaActual->cambiarJugador(jugador);
+    fichaActual->fluctuacionDeEnergia(ENERGIAMAXIMA);
 
-CuatroEnLineaEnergizado::CuatroEnLineaEnergizado(unsigned int filas,unsigned int columnas)
+}
+void CuatroEnLineaEnergizado::mensajeDeFinalizacionDelJuego(int jugador, bool hayGanador)
+{
+    if(hayGanador==false)
+    {
+        cout<<endl<<"<<<<<<<<<<<EMPATE<<<<<<<<<<"<<endl<<"----------PARTIDA FINALIZADA----------";
+    }
+    else
+    {
+        cout<<endl<<"<<<<<<<<<<GANADOR JUGADOR "<<jugador<<" <<<<<<<<<<"<<endl<<"----------PARTIDA FINALIZADA----------";
+    }
+}
+
+void CuatroEnLineaEnergizado::iniciarPartida()
+{
+    crearTablero();
+    imprimirTablero();
+    bool hayGanador = false;
+    int jugador;
+    while ((hayGanador == false) &&(cantidadDeFichasEnELTablero<(cantidadColumnas*cantidadFilas)))
+    {
+        jugador=1;
+        while((jugador <= this->cantidadDeJugadores)&&(hayGanador == false)
+            &&(cantidadDeFichasEnELTablero<(cantidadColumnas*cantidadFilas)))
+        {
+            insertarFicha(jugador);
+            hayGanador=comprobarSiHayGanador();
+            jugador++;
+            imprimirTablero();
+        }
+    }
+    mensajeDeFinalizacionDelJuego(jugador,hayGanador);
+}
+CuatroEnLineaEnergizado::CuatroEnLineaEnergizado(unsigned int filas,unsigned int columnas,unsigned int jugadores)
 {
     this->cantidadColumnas=columnas;
     this->cantidadFilas=filas;
+    this->cantidadDeJugadores=jugadores;
+    this->cantidadDeFichasEnELTablero=0;
     tableroColumnas= new IndiceColumna;
+
 }
 void CuatroEnLineaEnergizado::crearTablero()
 {
