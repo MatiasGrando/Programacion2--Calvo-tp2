@@ -20,19 +20,189 @@ class CuatroEnLineaEnergizado
         void imprimirRestoDeFilas();
         void crearTablero();
         void imprimirTablero();
+
         void insertarFicha(int jugador);
         bool columnaLlena(int columna);
-        bool comprobarSiHayGanador();
+
+        bool comprobarSiGano(int jugador);
+        bool ganoPorColumna(int jugador);
+        bool ganoPorFila(int jugador);
+        bool ganoPorEscaleraAscendente(int jugador);
+        bool ganoPorEscaleraDescendente(int jugador);
+
+        bool cuatroEnColumna(Columna* columnaActual,int fila);
+        bool cuatroEnFila(int columna, int fila);
+        bool cuatroEnEscaleraAscendente(int columna,int fila);
+        bool cuatroEnEscaleraDescendente(int columna,int fila);
+
         Columna* posicionarseEnColumna(int columna);
+        Ficha* posicionarseEnFila(Columna* columnaActual,int fila);
         Ficha* posicionarseEnFilaLibre(Columna* columnaActual);
+
         void mensajeDeFinalizacionDelJuego(int jugador, bool hayGanador);
 
     public:
         CuatroEnLineaEnergizado(unsigned int filas,unsigned int columnas,unsigned int jugadores);
-
+        ~CuatroEnLineaEnergizado();
         void iniciarPartida();
 
 };
+Ficha* CuatroEnLineaEnergizado::posicionarseEnFila(Columna* columnaActual, int fila)
+{
+    columnaActual->obtenerColumna()->iniciarCursor();
+    for(int i =1; i< fila;i++)
+    {
+        columnaActual->obtenerColumna()->avanzarCursor();
+    }
+    Ficha* filaActual=columnaActual->obtenerColumna()->obtenerCursor()->obtenerDato();
+    return filaActual;
+}
+bool CuatroEnLineaEnergizado::cuatroEnColumna(Columna* columnaActual,int fila)
+{
+    Ficha* ficha1;Ficha* ficha2;Ficha* ficha3;Ficha* ficha4;
+    ficha1=posicionarseEnFila(columnaActual,fila);
+    ficha2=posicionarseEnFila(columnaActual,fila+1);
+    ficha3=posicionarseEnFila(columnaActual,fila+2);
+    ficha4=posicionarseEnFila(columnaActual,fila+3);
+    return (   ficha1->obtenerJugador()==ficha2->obtenerJugador()
+            && ficha1->obtenerJugador()==ficha3->obtenerJugador()
+            && ficha1->obtenerJugador()==ficha4->obtenerJugador());
+}
+bool CuatroEnLineaEnergizado::cuatroEnFila(int columna, int fila)
+{
+    Ficha* ficha1;Ficha* ficha2;Ficha* ficha3;Ficha* ficha4;
+    Columna* columna1;Columna* columna2;Columna* columna3;Columna* columna4;
+    columna1=posicionarseEnColumna(columna);
+    columna2=posicionarseEnColumna(columna+1);
+    columna3=posicionarseEnColumna(columna+2);
+    columna4=posicionarseEnColumna(columna+3);
+    ficha1=posicionarseEnFila(columna1,fila);
+    ficha2=posicionarseEnFila(columna2,fila);
+    ficha3=posicionarseEnFila(columna3,fila);
+    ficha4=posicionarseEnFila(columna4,fila);
+    return (   (ficha1->obtenerJugador()==ficha2->obtenerJugador())
+            && (ficha1->obtenerJugador()==ficha3->obtenerJugador())
+            && (ficha1->obtenerJugador()==ficha4->obtenerJugador()));
+}
+bool CuatroEnLineaEnergizado::cuatroEnEscaleraAscendente(int columna, int fila)
+{
+    Ficha* ficha1;Ficha* ficha2;Ficha* ficha3;Ficha* ficha4;
+    Columna* columna1;Columna* columna2;Columna* columna3;Columna* columna4;
+    columna1=posicionarseEnColumna(columna);
+    columna2=posicionarseEnColumna(columna+1);
+    columna3=posicionarseEnColumna(columna+2);
+    columna4=posicionarseEnColumna(columna+3);
+    ficha1=posicionarseEnFila(columna1,fila);
+    ficha2=posicionarseEnFila(columna2,fila+1);
+    ficha3=posicionarseEnFila(columna3,fila+2);
+    ficha4=posicionarseEnFila(columna4,fila+3);
+    return (   ficha1->obtenerJugador()==ficha2->obtenerJugador()
+            && ficha1->obtenerJugador()==ficha3->obtenerJugador()
+            && ficha1->obtenerJugador()==ficha4->obtenerJugador());
+}
+bool CuatroEnLineaEnergizado::cuatroEnEscaleraDescendente(int columna, int fila)
+{
+    Ficha* ficha1;Ficha* ficha2;Ficha* ficha3;Ficha* ficha4;
+    Columna* columna1;Columna* columna2;Columna* columna3;Columna* columna4;
+    columna1=posicionarseEnColumna(columna);
+    columna2=posicionarseEnColumna(columna+1);
+    columna3=posicionarseEnColumna(columna+2);
+    columna4=posicionarseEnColumna(columna+3);
+    ficha1=posicionarseEnFila(columna1,fila+3);
+    ficha2=posicionarseEnFila(columna2,fila+2);
+    ficha3=posicionarseEnFila(columna3,fila+1);
+    ficha4=posicionarseEnFila(columna4,fila);
+    return (   ficha1->obtenerJugador()==ficha2->obtenerJugador()
+            && ficha1->obtenerJugador()==ficha3->obtenerJugador()
+            && ficha1->obtenerJugador()==ficha4->obtenerJugador());
+}
+bool CuatroEnLineaEnergizado::ganoPorEscaleraDescendente(int jugador)
+{
+    bool gano=false;
+    int fila=1;
+    while ((gano==false)&&((cantidadFilas-3)>=fila))
+    {
+        int columna=1;
+        while ((cuatroEnEscaleraDescendente(columna,fila)==false)&&(columna<=(cantidadColumnas-3)))
+        {
+            columna++;
+        }
+        if((columna<=(cantidadColumnas-3))&&(cuatroEnEscaleraDescendente(columna,fila)==true))
+        {
+            gano=true;
+        }
+        else
+        {
+            fila++;
+        }
+    }
+}
+
+bool CuatroEnLineaEnergizado::ganoPorEscaleraAscendente(int jugador)
+{
+    bool gano=false;
+    int fila=1;
+    while ((gano==false)&&((cantidadFilas-3)>=fila))
+    {
+        int columna=1;
+        while ((cuatroEnEscaleraAscendente(columna,fila)==false)&&(columna<=(cantidadColumnas-3)))
+        {
+            columna++;
+        }
+        if((columna<=(cantidadColumnas-3))&&(cuatroEnEscaleraAscendente(columna,fila)==true))
+        {
+            gano=true;
+        }
+        else
+        {
+            fila++;
+        }
+    }
+}
+bool CuatroEnLineaEnergizado::ganoPorColumna(int jugador)
+{
+    bool gano=false;
+    int columna=1;
+    while((gano==false) && ((cantidadColumnas)>=columna))
+    {
+        Columna* columnaActual=posicionarseEnColumna(columna);
+        int fila=1;
+        while ((cuatroEnColumna(columnaActual,fila)==false)&&(fila<=(cantidadFilas-3)))
+        {
+            fila++;
+        }
+        if((fila<=(cantidadFilas-3))&&(cuatroEnColumna(columnaActual,fila)==true))
+        {
+            gano=true;
+        }
+        else
+        {
+            columna++;
+        }
+    }
+    return gano;
+}
+bool CuatroEnLineaEnergizado::ganoPorFila(int jugador)
+{
+ bool gano=false;
+ int fila=1;
+ while ((gano==false)&&(cantidadFilas>=fila))
+ {
+    int columna=1;
+    while ((cuatroEnFila(columna,fila)==false)&&(columna<=(cantidadColumnas-3)))
+    {
+        columna++;
+    }
+    if((columna<=(cantidadColumnas-3))&&(cuatroEnFila(columna,fila)==true))
+    {
+        gano=true;
+    }
+    else
+    {
+        fila++;
+    }
+ }
+}
 bool CuatroEnLineaEnergizado::columnaLlena(int columna)
 {
     Columna* columnaActual= posicionarseEnColumna(columna);
@@ -40,9 +210,23 @@ bool CuatroEnLineaEnergizado::columnaLlena(int columna)
     Ficha* fichaActual= columnaActual->obtenerColumna()->obtenerCursor()->obtenerDato();
     return (fichaActual->obtenerJugador() != 0);
     }
-bool CuatroEnLineaEnergizado::comprobarSiHayGanador()
+bool CuatroEnLineaEnergizado::comprobarSiGano(int jugador)
 {
-    
+    bool gano=false;
+    gano = ganoPorColumna(jugador);
+    if (gano==false)
+    {
+        gano = ganoPorFila(jugador);
+        if (gano==false)
+        {
+            gano=ganoPorEscaleraAscendente(jugador);
+            if(gano==false)
+            {
+                gano=ganoPorEscaleraDescendente(jugador);
+            }
+        }
+    }
+    return gano;
 }
 Columna* CuatroEnLineaEnergizado::posicionarseEnColumna(int columna)
 {
@@ -111,13 +295,13 @@ void CuatroEnLineaEnergizado::iniciarPartida()
     int jugador;
     while ((hayGanador == false) &&(cantidadDeFichasEnELTablero<(cantidadColumnas*cantidadFilas)))
     {
-        jugador=1;
+        jugador=0;
         while((jugador <= this->cantidadDeJugadores)&&(hayGanador == false)
             &&(cantidadDeFichasEnELTablero<(cantidadColumnas*cantidadFilas)))
         {
-            insertarFicha(jugador);
-            hayGanador=comprobarSiHayGanador();
             jugador++;
+            insertarFicha(jugador);
+            hayGanador=comprobarSiGano(jugador);
             imprimirTablero();
         }
     }
@@ -185,12 +369,13 @@ void CuatroEnLineaEnergizado::imprimirRestoDeFilas()
         }
     }
 }
-
 void CuatroEnLineaEnergizado::imprimirTablero()
 {
     imprimirPrimeraFila();
     imprimirRestoDeFilas();
-
 }
-
+CuatroEnLineaEnergizado::~CuatroEnLineaEnergizado()
+{
+    delete tableroColumnas;
+}
 #endif // CUATROENLINEAENERGIZADO_H
