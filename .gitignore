@@ -42,6 +42,7 @@ class CuatroEnLineaEnergizado
         void mensajeDeFinalizacionDelJuego(int jugador, bool hayGanador);
 
     public:
+
         CuatroEnLineaEnergizado(unsigned int filas,unsigned int columnas,unsigned int jugadores);
         ~CuatroEnLineaEnergizado();
         void iniciarPartida();
@@ -64,9 +65,11 @@ bool CuatroEnLineaEnergizado::cuatroEnColumna(Columna* columnaActual,int fila)
     ficha2=posicionarseEnFila(columnaActual,fila+1);
     ficha3=posicionarseEnFila(columnaActual,fila+2);
     ficha4=posicionarseEnFila(columnaActual,fila+3);
-    return (   ficha1->obtenerJugador()==ficha2->obtenerJugador()
-            && ficha1->obtenerJugador()==ficha3->obtenerJugador()
-            && ficha1->obtenerJugador()==ficha4->obtenerJugador());
+
+    return (  ( ficha1->obtenerJugador()!=0)
+            && (ficha1->obtenerJugador()==ficha2->obtenerJugador())
+            && (ficha1->obtenerJugador()==ficha3->obtenerJugador())
+            && (ficha1->obtenerJugador()==ficha4->obtenerJugador()));
 }
 bool CuatroEnLineaEnergizado::cuatroEnFila(int columna, int fila)
 {
@@ -80,7 +83,8 @@ bool CuatroEnLineaEnergizado::cuatroEnFila(int columna, int fila)
     ficha2=posicionarseEnFila(columna2,fila);
     ficha3=posicionarseEnFila(columna3,fila);
     ficha4=posicionarseEnFila(columna4,fila);
-    return (   (ficha1->obtenerJugador()==ficha2->obtenerJugador())
+    return (   (ficha1->obtenerJugador()!=0)
+            && (ficha1->obtenerJugador()==ficha2->obtenerJugador())
             && (ficha1->obtenerJugador()==ficha3->obtenerJugador())
             && (ficha1->obtenerJugador()==ficha4->obtenerJugador()));
 }
@@ -96,7 +100,8 @@ bool CuatroEnLineaEnergizado::cuatroEnEscaleraAscendente(int columna, int fila)
     ficha2=posicionarseEnFila(columna2,fila+1);
     ficha3=posicionarseEnFila(columna3,fila+2);
     ficha4=posicionarseEnFila(columna4,fila+3);
-    return (   ficha1->obtenerJugador()==ficha2->obtenerJugador()
+    return (   ficha1->obtenerJugador()!=0
+            && ficha1->obtenerJugador()==ficha2->obtenerJugador()
             && ficha1->obtenerJugador()==ficha3->obtenerJugador()
             && ficha1->obtenerJugador()==ficha4->obtenerJugador());
 }
@@ -112,7 +117,8 @@ bool CuatroEnLineaEnergizado::cuatroEnEscaleraDescendente(int columna, int fila)
     ficha2=posicionarseEnFila(columna2,fila+2);
     ficha3=posicionarseEnFila(columna3,fila+1);
     ficha4=posicionarseEnFila(columna4,fila);
-    return (   ficha1->obtenerJugador()==ficha2->obtenerJugador()
+    return (   ficha1->obtenerJugador()!=0
+            && ficha1->obtenerJugador()==ficha2->obtenerJugador()
             && ficha1->obtenerJugador()==ficha3->obtenerJugador()
             && ficha1->obtenerJugador()==ficha4->obtenerJugador());
 }
@@ -123,7 +129,7 @@ bool CuatroEnLineaEnergizado::ganoPorEscaleraDescendente(int jugador)
     while ((gano==false)&&((cantidadFilas-3)>=fila))
     {
         int columna=1;
-        while ((cuatroEnEscaleraDescendente(columna,fila)==false)&&(columna<=(cantidadColumnas-3)))
+        while ((columna<=(cantidadColumnas-3))&&(cuatroEnEscaleraDescendente(columna,fila)==false))
         {
             columna++;
         }
@@ -136,6 +142,7 @@ bool CuatroEnLineaEnergizado::ganoPorEscaleraDescendente(int jugador)
             fila++;
         }
     }
+    return(gano);
 }
 
 bool CuatroEnLineaEnergizado::ganoPorEscaleraAscendente(int jugador)
@@ -145,7 +152,7 @@ bool CuatroEnLineaEnergizado::ganoPorEscaleraAscendente(int jugador)
     while ((gano==false)&&((cantidadFilas-3)>=fila))
     {
         int columna=1;
-        while ((cuatroEnEscaleraAscendente(columna,fila)==false)&&(columna<=(cantidadColumnas-3)))
+        while ((columna<=(cantidadColumnas-3))&&(cuatroEnEscaleraAscendente(columna,fila)==false))
         {
             columna++;
         }
@@ -158,6 +165,7 @@ bool CuatroEnLineaEnergizado::ganoPorEscaleraAscendente(int jugador)
             fila++;
         }
     }
+    return (gano);
 }
 bool CuatroEnLineaEnergizado::ganoPorColumna(int jugador)
 {
@@ -167,7 +175,7 @@ bool CuatroEnLineaEnergizado::ganoPorColumna(int jugador)
     {
         Columna* columnaActual=posicionarseEnColumna(columna);
         int fila=1;
-        while ((cuatroEnColumna(columnaActual,fila)==false)&&(fila<=(cantidadFilas-3)))
+        while ((fila<=(cantidadFilas-3))&&(cuatroEnColumna(columnaActual,fila)==false))
         {
             fila++;
         }
@@ -189,7 +197,7 @@ bool CuatroEnLineaEnergizado::ganoPorFila(int jugador)
  while ((gano==false)&&(cantidadFilas>=fila))
  {
     int columna=1;
-    while ((cuatroEnFila(columna,fila)==false)&&(columna<=(cantidadColumnas-3)))
+    while ((columna<=(cantidadColumnas-3))&&(cuatroEnFila(columna,fila)==false))
     {
         columna++;
     }
@@ -202,6 +210,7 @@ bool CuatroEnLineaEnergizado::ganoPorFila(int jugador)
         fila++;
     }
  }
+ return (gano);
 }
 bool CuatroEnLineaEnergizado::columnaLlena(int columna)
 {
@@ -217,14 +226,15 @@ bool CuatroEnLineaEnergizado::comprobarSiGano(int jugador)
     if (gano==false)
     {
         gano = ganoPorFila(jugador);
-        if (gano==false)
+        if(gano==false)
         {
-            gano=ganoPorEscaleraAscendente(jugador);
+            gano= ganoPorEscaleraAscendente(jugador);
             if(gano==false)
             {
-                gano=ganoPorEscaleraDescendente(jugador);
+                gano= ganoPorEscaleraDescendente(jugador);
             }
         }
+
     }
     return gano;
 }
@@ -296,7 +306,7 @@ void CuatroEnLineaEnergizado::iniciarPartida()
     while ((hayGanador == false) &&(cantidadDeFichasEnELTablero<(cantidadColumnas*cantidadFilas)))
     {
         jugador=0;
-        while((jugador <= this->cantidadDeJugadores)&&(hayGanador == false)
+        while((jugador < this->cantidadDeJugadores)&&(hayGanador == false)
             &&(cantidadDeFichasEnELTablero<(cantidadColumnas*cantidadFilas)))
         {
             jugador++;
